@@ -1,0 +1,22 @@
+10563 windows, 32 attack windows
+
+attack windows per test fold (seed 0): [8, 9, 6, 9] 
+
+       experiment         model  accuracy_mean  precision_mean  precision_std  recall_mean  recall_std  f1_mean  f1_std
+   A_all_features ThresholdRule         1.0000          1.0000         0.0000       1.0000      0.0000   1.0000  0.0000
+   A_all_features  DecisionTree         0.9999          1.0000         0.0000       0.9688      0.0000   0.9841  0.0000
+   A_all_features  RandomForest         0.9998          1.0000         0.0000       0.9375      0.0000   0.9677  0.0000
+B_no_deauth_count  DecisionTree         0.9940          0.3239         0.0118       0.9000      0.0125   0.4763  0.0138
+B_no_deauth_count  RandomForest         0.9989          0.8159         0.0278       0.8250      0.0153   0.8200  0.0136
+
+Confusion [[TN FP][FN TP]] (seed 0) A_all_features / ThresholdRule: [[10531, 0], [0, 32]]
+
+Confusion [[TN FP][FN TP]] (seed 0) A_all_features / DecisionTree: [[10531, 0], [1, 31]]
+
+Confusion [[TN FP][FN TP]] (seed 0) A_all_features / RandomForest: [[10531, 0], [2, 30]]
+
+Confusion [[TN FP][FN TP]] (seed 0) B_no_deauth_count / DecisionTree: [[10466, 65], [3, 29]]
+
+Confusion [[TN FP][FN TP]] (seed 0) B_no_deauth_count / RandomForest: [[10524, 7], [5, 27]]
+
+Saved: results/cv_metrics.json, results/cv_cm_*.png

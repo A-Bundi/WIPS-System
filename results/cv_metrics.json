@@ -1,0 +1,112 @@
+[
+  {
+    "experiment": "A_all_features",
+    "model": "ThresholdRule",
+    "accuracy_mean": 1.0,
+    "precision_mean": 1.0,
+    "recall_mean": 1.0,
+    "f1_mean": 1.0,
+    "accuracy_std": 0.0,
+    "precision_std": 0.0,
+    "recall_std": 0.0,
+    "f1_std": 0.0,
+    "confusion_seed0": [
+      [
+        10531,
+        0
+      ],
+      [
+        0,
+        32
+      ]
+    ]
+  },
+  {
+    "experiment": "A_all_features",
+    "model": "DecisionTree",
+    "accuracy_mean": 0.9999053299252105,
+    "precision_mean": 1.0,
+    "recall_mean": 0.96875,
+    "f1_mean": 0.984126984126984,
+    "accuracy_std": 1.1102230246251565e-16,
+    "precision_std": 0.0,
+    "recall_std": 0.0,
+    "f1_std": 1.1102230246251565e-16,
+    "confusion_seed0": [
+      [
+        10531,
+        0
+      ],
+      [
+        1,
+        31
+      ]
+    ]
+  },
+  {
+    "experiment": "A_all_features",
+    "model": "RandomForest",
+    "accuracy_mean": 0.9998106598504213,
+    "precision_mean": 1.0,
+    "recall_mean": 0.9375,
+    "f1_mean": 0.967741935483871,
+    "accuracy_std": 0.0,
+    "precision_std": 0.0,
+    "recall_std": 0.0,
+    "f1_std": 0.0,
+    "confusion_seed0": [
+      [
+        10531,
+        0
+      ],
+      [
+        2,
+        30
+      ]
+    ]
+  },
+  {
+    "experiment": "B_no_deauth_count",
+    "model": "DecisionTree",
+    "accuracy_mean": 0.9939979172583546,
+    "precision_mean": 0.32394196792267055,
+    "recall_mean": 0.9,
+    "f1_mean": 0.47631751376108467,
+    "accuracy_std": 0.00029086985696747915,
+    "precision_std": 0.011818424508155808,
+    "recall_std": 0.012499999999999999,
+    "f1_std": 0.013845883827503017,
+    "confusion_seed0": [
+      [
+        10466,
+        65
+      ],
+      [
+        3,
+        29
+      ]
+    ]
+  },
+  {
+    "experiment": "B_no_deauth_count",
+    "model": "RandomForest",
+    "accuracy_mean": 0.9989018271324435,
+    "precision_mean": 0.8158689839572192,
+    "recall_mean": 0.825,
+    "f1_mean": 0.8200321452740807,
+    "accuracy_std": 9.654491174084729e-05,
+    "precision_std": 0.02776211647940669,
+    "recall_std": 0.015309310892394862,
+    "f1_std": 0.013605726581318629,
+    "confusion_seed0": [
+      [
+        10524,
+        7
+      ],
+      [
+        5,
+        27
+      ]
+    ]
+  }
+]

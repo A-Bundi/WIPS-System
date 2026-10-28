@@ -3,3 +3,5 @@ data/
 __pycache__/
 *.pyc
 models/*.joblib
+results/alerts.log
+results/blocklist.txt

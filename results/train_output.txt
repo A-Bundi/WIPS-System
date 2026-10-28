@@ -1,0 +1,104 @@
+Reading CSVs and building windows (first run only)...
+  loaded 1/63: SQL_Injection_17.csv (49999 frames)
+  loaded 2/63: SQL_Injection_19.csv (50000 frames)
+  loaded 3/63: SQL_Injection_2.csv (50000 frames)
+  loaded 4/63: SQL_Injection_45.csv (49989 frames)
+  loaded 5/63: SQL_Injection_51.csv (48290 frames)
+  loaded 6/63: SSDP_105.csv (7794 frames)
+  loaded 7/63: SSDP_113.csv (8924 frames)
+  loaded 8/63: SSDP_40.csv (25681 frames)
+  loaded 9/63: SSDP_92.csv (8009 frames)
+  loaded 10/63: SSDP_94.csv (8514 frames)
+  loaded 11/63: Evil_Twin_10.csv (49999 frames)
+  loaded 12/63: Evil_Twin_14.csv (50000 frames)
+  loaded 13/63: Evil_Twin_28.csv (49814 frames)
+  loaded 14/63: Evil_Twin_52.csv (49917 frames)
+  loaded 15/63: Evil_Twin_66.csv (49890 frames)
+  loaded 16/63: Website_spoofing_16.csv (49986 frames)
+  loaded 17/63: Website_spoofing_23.csv (36707 frames)
+  loaded 18/63: Website_spoofing_29.csv (38010 frames)
+  loaded 19/63: Website_spoofing_35.csv (35562 frames)
+  loaded 20/63: Website_spoofing_53.csv (13151 frames)
+  loaded 21/63: Disas_13.csv (50000 frames)
+  loaded 22/63: Disas_18.csv (50000 frames)
+  loaded 23/63: Disas_3.csv (49998 frames)
+  loaded 24/63: Disas_37.csv (40371 frames)
+  loaded 25/63: Disas_38.csv (40742 frames)
+  loaded 26/63: (Re)Assoc_0.csv (50000 frames)
+  loaded 27/63: (Re)Assoc_16.csv (50000 frames)
+  loaded 28/63: (Re)Assoc_2.csv (50000 frames)
+  loaded 29/63: (Re)Assoc_23.csv (49617 frames)
+  loaded 30/63: (Re)Assoc_3.csv (50000 frames)
+  loaded 31/63: RogueAP_10.csv (50000 frames)
+  loaded 32/63: RogueAP_17.csv (50000 frames)
+  loaded 33/63: RogueAP_8.csv (50000 frames)
+  loaded 34/63: Krack_1.csv (50000 frames)
+  loaded 35/63: Krack_19.csv (50000 frames)
+  loaded 36/63: Krack_2.csv (50000 frames)
+  loaded 37/63: Krack_26.csv (33658 frames)
+  loaded 38/63: Krack_28.csv (33166 frames)
+  loaded 39/63: Kr00k_22.csv (50000 frames)
+  loaded 40/63: Kr00k_24.csv (50000 frames)
+  loaded 41/63: Kr00k_27.csv (49998 frames)
+  loaded 42/63: Kr00k_39.csv (39193 frames)
+  loaded 43/63: Kr00k_8.csv (50000 frames)
+  loaded 44/63: SSH_10.csv (50000 frames)
+  loaded 45/63: SSH_11.csv (50000 frames)
+  loaded 46/63: SSH_16.csv (50000 frames)
+  loaded 47/63: SSH_30.csv (49263 frames)
+  loaded 48/63: SSH_41.csv (49488 frames)
+  loaded 49/63: Botnet_19.csv (50000 frames)
+  loaded 50/63: Botnet_22.csv (49976 frames)
+  loaded 51/63: Botnet_26.csv (49160 frames)
+  loaded 52/63: Botnet_4.csv (50000 frames)
+  loaded 53/63: Botnet_41.csv (49380 frames)
+  loaded 54/63: Malware_16.csv (50000 frames)
+  loaded 55/63: Malware_17.csv (50000 frames)
+  loaded 56/63: Malware_28.csv (50000 frames)
+  loaded 57/63: Malware_36.csv (40401 frames)
+  loaded 58/63: Malware_4.csv (49998 frames)
+  loaded 59/63: Deauth_11.csv (50000 frames)
+  loaded 60/63: Deauth_18.csv (50000 frames)
+  loaded 61/63: Deauth_20.csv (50000 frames)
+  loaded 62/63: Deauth_25.csv (50000 frames)
+  loaded 63/63: Deauth_3.csv (50000 frames)
+
+Windows: 10563 total | attack windows: 32
+Train: 7923 (24 attack) | Test: 2640 (8 attack)
+
+Feature importance (A_all_features):
+deauth_count    0.392
+deauth_frac     0.287
+mgmt_frac       0.129
+std_signal      0.095
+mean_signal     0.072
+rate_fps        0.018
+n_unique_ra     0.006
+mean_len        0.002
+
+Feature importance (B_no_deauth_count):
+mgmt_frac      0.427
+std_signal     0.278
+mean_signal    0.178
+rate_fps       0.070
+n_unique_ra    0.028
+mean_len       0.019
+
+       experiment         model  accuracy  precision  recall     f1
+   A_all_features ThresholdRule    1.0000     1.0000     1.0 1.0000
+   A_all_features  DecisionTree    1.0000     1.0000     1.0 1.0000
+   A_all_features  RandomForest    1.0000     1.0000     1.0 1.0000
+B_no_deauth_count  DecisionTree    0.9947     0.3636     1.0 0.5333
+B_no_deauth_count  RandomForest    0.9996     0.8889     1.0 0.9412
+
+Confusion [[TN FP][FN TP]] A_all_features / ThresholdRule: [[2632, 0], [0, 8]]
+
+Confusion [[TN FP][FN TP]] A_all_features / DecisionTree: [[2632, 0], [0, 8]]
+
+Confusion [[TN FP][FN TP]] A_all_features / RandomForest: [[2632, 0], [0, 8]]
+
+Confusion [[TN FP][FN TP]] B_no_deauth_count / DecisionTree: [[2618, 14], [0, 8]]
+
+Confusion [[TN FP][FN TP]] B_no_deauth_count / RandomForest: [[2631, 1], [0, 8]]
+
+Saved: results/metrics.json, results/cm_*.png, models/rf_*.joblib

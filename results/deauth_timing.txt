@@ -1,0 +1,38 @@
+deauth-frame flag vs label:
+ Label            Deauth  Normal
+is_deauth_frame                
+False                 2  247433
+True               2565       0
+
+time span per file (seconds):
+file
+Deauth_11.csv    10.4
+Deauth_18.csv    14.0
+Deauth_20.csv     9.1
+Deauth_25.csv    14.0
+Deauth_3.csv      7.5
+Name: frame.time_epoch, dtype: float64
+
+attack time span (s): 14.0
+attack seconds: 15 | frames/sec describe:
+ count     15.0
+mean     171.1
+std       55.1
+min       54.0
+25%      154.0
+50%      185.0
+75%      207.0
+max      250.0
+dtype: float64
+unique attacker TAs: 3 <StringArray>
+['0c:9d:92:54:fe:34', '50:3e:aa:e3:1f:be', '50:3e:aa:e4:01:93']
+Length: 3, dtype: str
+
+normal deauth frames: 0
+normal deauth max frames in any 1s window: nan
+
+signal_dbm by label:
+            count  mean   std   min   25%   50%   75%   max
+Label                                                     
+Deauth    2567.0 -43.4   3.7 -62.0 -45.0 -42.0 -41.0 -33.0
+Normal  247433.0 -46.2  13.9 -89.0 -57.0 -36.0 -36.0 -29.0

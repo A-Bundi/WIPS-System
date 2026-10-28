@@ -1,0 +1,18 @@
+                     normal  attack      attack_label  deauth_normal
+folder                                                              
+10.sql_injection     248278      86     SQL_Injection              0
+11.ssdp               58922  191078              SSDP              0
+12.evil_twin         249620     377         Evil_Twin              2
+13.website_spoofing  173416   45165  Website_spoofing              0
+2.disas              231111   18887             Disas              2
+3.reassoc            249617     386     (Re)Assoc,nan              2
+4.rogue_ap           249869     129           RogueAP           9849
+5.krack              216824   21669             Krack              4
+6.kr00k              239191   10807             Kr00k              0
+7.ssh                248751    1248               SSH              0
+8.botnet             248516    1483            Botnet              0
+9.malware            240399    9599           Malware              0
+deauth               247433    2567            Deauth              0 
+
+RogueAP_31.csv | deauth(Normal): 6225 | active seconds: 9 | max/sec: 1786 | median/sec: 678 | distinct TAs: 1 | file labels: ['Normal', 'RogueAP']
+RogueAP_33.csv | deauth(Normal): 3624 | active seconds: 9 | max/sec: 1078 | median/sec: 265 | distinct TAs: 1 | file labels: ['Normal', 'RogueAP']

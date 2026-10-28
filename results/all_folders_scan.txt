@@ -1,0 +1,17 @@
+                     files  ...  deauth_in_normal
+folder                      ...                  
+10.sql_injection         5  ...                 0
+11.ssdp                  5  ...                 0
+12.evil_twin             5  ...                 2
+13.website_spoofing      5  ...                 0
+2.disas                  5  ...                 2
+3.reassoc                5  ...                 2
+4.rogue_ap               5  ...              9849
+5.krack                  5  ...                 4
+6.kr00k                  5  ...                 0
+7.ssh                    5  ...                 0
+8.botnet                 5  ...                 0
+9.malware                5  ...                 0
+deauth                   5  ...                 0
+
+[13 rows x 5 columns]

@@ -1,0 +1,100 @@
+{
+  "window_s": 0.25,
+  "rule_threshold": 3,
+  "n_train": 7923,
+  "n_test": 2640,
+  "attack_train": 24,
+  "attack_test": 8,
+  "results": [
+    {
+      "experiment": "A_all_features",
+      "model": "ThresholdRule",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion": [
+        [
+          2632,
+          0
+        ],
+        [
+          0,
+          8
+        ]
+      ]
+    },
+    {
+      "experiment": "A_all_features",
+      "model": "DecisionTree",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion": [
+        [
+          2632,
+          0
+        ],
+        [
+          0,
+          8
+        ]
+      ]
+    },
+    {
+      "experiment": "A_all_features",
+      "model": "RandomForest",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion": [
+        [
+          2632,
+          0
+        ],
+        [
+          0,
+          8
+        ]
+      ]
+    },
+    {
+      "experiment": "B_no_deauth_count",
+      "model": "DecisionTree",
+      "accuracy": 0.9946969696969697,
+      "precision": 0.36363636363636365,
+      "recall": 1.0,
+      "f1": 0.5333333333333333,
+      "confusion": [
+        [
+          2618,
+          14
+        ],
+        [
+          0,
+          8
+        ]
+      ]
+    },
+    {
+      "experiment": "B_no_deauth_count",
+      "model": "RandomForest",
+      "accuracy": 0.9996212121212121,
+      "precision": 0.8888888888888888,
+      "recall": 1.0,
+      "f1": 0.9411764705882353,
+      "confusion": [
+        [
+          2631,
+          1
+        ],
+        [
+          0,
+          8
+        ]
+      ]
+    }
+  ]
+}
