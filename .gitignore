@@ -5,3 +5,7 @@ __pycache__/
 models/*.joblib
 results/alerts.log
 results/blocklist.txt
+results/feed.csv
+results/run_status.json
+results/detect_stdout.log
+results/*.tmp
