@@ -9,3 +9,6 @@ results/feed.csv
 results/run_status.json
 results/detect_stdout.log
 results/*.tmp
+results/wips.db
+results/wips.db-wal
+results/wips.db-shm

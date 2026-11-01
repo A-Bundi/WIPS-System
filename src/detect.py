@@ -6,6 +6,7 @@ Also writes results/feed.csv and results/run_status.json, which the dashboard re
 import argparse
 import json
 import os
+import signal
 import time
 
 import joblib
@@ -14,6 +15,7 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 
 from features import build_windows
+import store
 from prevent import Responder
 from sources import CSV_MAP, FRAME_COLS, LiveSniffSource
 
@@ -34,6 +36,10 @@ def write_status(path, **kw):
     os.replace(tmp, path)  # atomic, so the dashboard never reads a half-written file
 
 
+def _terminate(*_):
+    raise KeyboardInterrupt
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", help="replay one AWID3 CSV")
@@ -49,15 +55,19 @@ def main():
     if bool(a.csv) == bool(a.live):
         ap.error("give exactly one of --csv or --live")
 
+    signal.signal(signal.SIGTERM, _terminate)
     os.makedirs(os.path.dirname(a.feed), exist_ok=True)
     source = a.csv or a.live
     write_status(a.status, state="loading", source=source, sec_done=0, sec_total=0)
+    con = store.connect()
+    run_id = store.start_run(con, source)
 
     bundle = joblib.load(a.model)
     model, feats, window = bundle["model"], bundle["features"], bundle["window"]
     frames = load_csv(a.csv) if a.csv else LiveSniffSource(a.live, a.seconds).frames()
     w = build_windows(frames, window)
     if w.empty:
+        store.finish_run(con, run_id, "done", 0, 0, 0, 0)
         write_status(a.status, state="done", source=source, sec_done=0, sec_total=0)
         print("No frames to analyse.")
         return
@@ -67,27 +77,39 @@ def main():
     resp = Responder(protected=a.protect, enforce=bool(a.enforce_iface), iface=a.enforce_iface)
 
     pd.DataFrame(columns=FEED_COLS).to_csv(a.feed, index=False)  # fresh feed for this run
-    print(f"Source: {source} | {len(frames)} frames -> {len(w)} windows of {window}s\n")
-    done, alerts = [], 0
-    for i, sec in enumerate(secs, 1):
-        g = w[w["sec"] == sec].copy()
-        g["pred"] = model.predict(g[feats])
-        for _, r in g[g["pred"] == 1].iterrows():
-            msg = resp.handle(r["ta"], r["t0"],
-                              f"deauth_frames={int(r['deauth_count'])} rate={r['rate_fps']:.0f}fps")
-            if msg:
-                alerts += 1
-                print("  ALERT", msg)
-        print(f"t=+{sec - t_start:>3}s  windows={len(g):>4}  flagged={int(g['pred'].sum()):>3}")
-        g.assign(sec=sec - t_start)[FEED_COLS].to_csv(a.feed, mode="a", header=False, index=False)
-        write_status(a.status, state="running", source=source, sec_done=i, sec_total=len(secs))
-        done.append(g)
-        time.sleep(a.delay)
+    print(f"Source: {source} | {len(frames)} frames -> {len(w)} windows of {window}s | run #{run_id}\n")
+    done, alerts, n_frames, n_flagged, i = [], 0, 0, 0, 0
+    state = "stopped"
+    try:
+        for i, sec in enumerate(secs, 1):
+            g = w[w["sec"] == sec].copy()
+            g["pred"] = model.predict(g[feats])
+            flagged = g[g["pred"] == 1]
+            for _, r in flagged.iterrows():
+                msg = resp.handle(r["ta"], r["t0"],
+                                  f"deauth_frames={int(r['deauth_count'])} rate={r['rate_fps']:.0f}fps")
+                if msg:
+                    alerts += 1
+                    print("  ALERT", msg)
+            store.record_flagged(con, run_id, sec - t_start, flagged, resp.blocked)
+            n_frames += int(g["n"].sum())
+            n_flagged += len(flagged)
+            print(f"t=+{sec - t_start:>3}s  windows={len(g):>4}  flagged={len(flagged):>3}")
+            g.assign(sec=sec - t_start)[FEED_COLS].to_csv(a.feed, mode="a", header=False, index=False)
+            write_status(a.status, state="running", source=source, sec_done=i, sec_total=len(secs))
+            done.append(g)
+            time.sleep(a.delay)
+        state = "done"
+    except KeyboardInterrupt:
+        print("\nStopped early.")
+    finally:   # always save the run, even if it was stopped
+        store.finish_run(con, run_id, state, n_frames, sum(len(d) for d in done), n_flagged, alerts)
+        write_status(a.status, state=state, source=source, sec_done=i, sec_total=len(secs))
 
-    write_status(a.status, state="done", source=source, sec_done=len(secs), sec_total=len(secs))
-    res = pd.concat(done)
     print(f"\nAlerts raised: {alerts} | blocklist: {sorted(resp.blocked) or 'empty'}")
-    if a.csv:
+    print(f"Saved run #{run_id} ({state}) to {store.DB}")
+    if a.csv and done:
+        res = pd.concat(done)
         cm = confusion_matrix(res["label"], res["pred"], labels=[0, 1])
         print(f"Confusion [[TN FP][FN TP]] on this file: {cm.tolist()}")
 

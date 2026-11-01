@@ -14,6 +14,9 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import store  # noqa: E402
+
 FEED = "results/feed.csv"
 STATUS = "results/run_status.json"
 ALERTS = "results/alerts.log"
@@ -189,10 +192,60 @@ def live_view():
             st.caption("Empty. MACs are added automatically when an attack is detected.")
 
 
-tab_live, tab_model, tab_how = st.tabs(["Live monitor", "Model performance", "How it works"])
+@st.fragment(run_every=3)
+def history_view():
+    con = store.connect()
+    alld, runs = store.devices_all(con), store.runs_df(con)
+    st.caption("Saved in results/wips.db and kept between runs. The Start button never clears it.")
+
+    k = st.columns(4)
+    k[0].metric("Runs recorded", len(runs))
+    k[1].metric("Distinct MACs flagged", len(alld))
+    k[2].metric("Flagged windows (all runs)", int(alld["flagged_windows"].sum()) if len(alld) else 0)
+    k[3].metric("MACs blocklisted", int((alld["blocklisted"] == "yes").sum()) if len(alld) else 0)
+
+    st.subheader("All flagged devices (every saved run)")
+    if alld.empty:
+        st.info("Nothing saved yet. Flagged devices are stored here automatically after a run.")
+    else:
+        st.dataframe(alld, hide_index=True, width="stretch")
+        st.download_button("⬇ Download as CSV", alld.to_csv(index=False),
+                           file_name="flagged_devices.csv", mime="text/csv")
+        st.caption("runs_flagged = number of separate runs in which the MAC was flagged. Replaying "
+                   "the same capture again counts as another run, so repeat counts are inflated "
+                   "in replay mode and meaningful mainly for live captures.")
+
+    st.subheader("Run history")
+    if runs.empty:
+        st.caption("No runs yet.")
+    else:
+        st.dataframe(runs, hide_index=True, width="stretch")
+        pick = st.selectbox("Inspect one run", runs["run"].tolist(),
+                            format_func=lambda r: f"Run #{r}", key="hist_pick")
+        one = store.devices_for_run(con, pick)
+        if one.empty:
+            st.success(f"Run #{pick} flagged no devices.")
+        else:
+            st.dataframe(one, hide_index=True, width="stretch")
+            st.caption("first_sec / last_sec = seconds into the capture when the device was first "
+                       "and last flagged.")
+
+    with st.expander("Clear saved history"):
+        sure = st.checkbox("Yes, permanently delete all saved runs and flagged devices")
+        if st.button("Delete history", disabled=not sure):
+            store.clear_history(con)
+            st.rerun()
+    con.close()
+
+
+tab_live, tab_hist, tab_model, tab_how = st.tabs(
+    ["Live monitor", "Flagged devices (history)", "Model performance", "How it works"])
 
 with tab_live:
     live_view()
+
+with tab_hist:
+    history_view()
 
 with tab_model:
     st.subheader("How well does the detector work?")
